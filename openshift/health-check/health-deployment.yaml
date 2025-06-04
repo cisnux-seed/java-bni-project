@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: java-bni-deployment
+  labels:
+    app: java-bni
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java-bni
+  template:
+    metadata:
+      labels:
+        app: java-bni
+    spec:
+      containers:
+        - name: java-bni-container
+          image: default-route-openshift-image-registry.apps.rm1.0a51.p1.openshiftapps.com/cisnux-skywalker-dev/java-bni-project:latest
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
