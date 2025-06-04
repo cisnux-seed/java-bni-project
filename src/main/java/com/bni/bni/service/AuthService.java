@@ -1,58 +1,52 @@
 package com.bni.bni.service;
 
+import com.bni.bni.entity.User;
+import com.bni.bni.repository.UserRepository;
 import com.bni.bni.util.JwtUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class AuthService {
-    private final String[][] users = {
-        {"admin", "password123"},
-        {"user", "admin123"}
-    };
+    private final Logger logger = LoggerFactory.getLogger(AuthService.class);
+    private final PasswordEncoder encoder;
+    private final JwtUtil jwtUtil;
+    private final UserRepository repo;
 
-    @Autowired
-    private PasswordEncoder encoder;
+    AuthService(PasswordEncoder encoder, JwtUtil jwtUtil, UserRepository repo) {
+        this.encoder = encoder;
+        this.jwtUtil = jwtUtil;
+        this.repo = repo;
+    }
 
-    @Autowired
-    private JwtUtil jwtUtil;
 
-    // public String register(String username, String password) {
-    //     if (repo.existsById(username)) {
-    //         logger.warn("PERCOBAAN REGSTRASI DENGAN MENGGUNAKAN USER TERDAFTAR: {}", username);
-    //         return "User already exists";
-    //     }
-    //     User user = new User();
-    //     user.setUsername(username);
-    //     user.setPasswordHash(encoder.encode(password));
-    //     user.setRole("USER");
-    //     repo.save(user);
+    public String register(String username, String password) {
+        if (repo.existsByUsername(username)) {
+            logger.warn("PERCOBAAN REGSTRASI DENGAN MENGGUNAKAN USER TERDAFTAR: {}", username);
+            return "User already exists";
+        }
+        User user = new User();
+        user.setUsername(username);
+        user.setPasswordHash(encoder.encode(password));
+        user.setRole("USER");
+        repo.save(user);
 
-    //     logger.warn("PERCOBAAN REGISTER BERHASIL: {}", username);
-    //     return "Registered successfully";
-    // }
-
-    // public String login(String username, String password) {
-    //     Optional<User> user = repo.findByUsername(username);
-    //     if (user.isPresent() && encoder.matches(password, user.get().getPasswordHash())) {
-    //         logger.warn("PERCOBAAN LOGIN BERHASIL: {}", username);
-    //         return jwtUtil.generateToken(username, user.get().getRole());
-    //     }
-
-    //     logger.warn("PERCOBAAN LOGIN GAGAL, USERNAME ATAU PASSWORD SALAH: {}", username);
-    //     return null;
-    // }
+        logger.warn("PERCOBAAN REGISTER BERHASIL: {}", username);
+        return "Registered successfully";
+    }
 
     public String login(String username, String password) {
-        for (String[] u : users) {
-            if (u[0].equals(username) && u[1].equals(password)) {
-                return jwtUtil.generateToken(username, "USER");
-            }
+        Optional<User> user = repo.findByUsername(username);
+        if (user.isPresent() && encoder.matches(password, user.get().getPasswordHash())) {
+            logger.warn("PERCOBAAN LOGIN BERHASIL: {}", username);
+            return jwtUtil.generateToken(username, user.get().getRole());
         }
 
+        logger.warn("PERCOBAAN LOGIN GAGAL, USERNAME ATAU PASSWORD SALAH: {}", username);
         return null;
     }
 }

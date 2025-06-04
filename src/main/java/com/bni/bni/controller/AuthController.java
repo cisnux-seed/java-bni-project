@@ -3,7 +3,6 @@ package com.bni.bni.controller;
 import com.bni.bni.service.AuthService;
 import com.bni.bni.util.JwtUtil;
 import io.jsonwebtoken.Claims;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,25 +12,26 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    private final AuthService authService;
+    private final JwtUtil jwtUtil;
 
-    @Autowired
-    private AuthService authService;
+    AuthController(AuthService authService, JwtUtil jwtUtil) {
+        this.authService = authService;
+        this.jwtUtil = jwtUtil;
+    }
 
-    @Autowired
-    private JwtUtil jwtUtil;
+     @PostMapping("/register")
+     public ResponseEntity<Map<String, Object>> register(@RequestBody Map<String, String> body) {
+         String username = body.get("username");
+         String password = body.get("password");
+         String message = authService.register(username, password);
 
-    // @PostMapping("/register")
-    // public ResponseEntity<Map<String, Object>> register(@RequestBody Map<String, String> body) {
-    //     String username = body.get("username");
-    //     String password = body.get("password");
-    //     String message = authService.register(username, password);
+         Map<String, Object> response = new HashMap<>();
+         response.put("status", 200);
+         response.put("message", message);
 
-    //     Map<String, Object> response = new HashMap<>();
-    //     response.put("status", 200);
-    //     response.put("message", message);
-
-    //     return ResponseEntity.ok(response);
-    // }
+         return ResponseEntity.ok(response);
+     }
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> body) {

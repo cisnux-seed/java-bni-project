@@ -1,43 +1,69 @@
-// package com.bni.bni.entity;
+package com.bni.bni.entity;
 
-// import jakarta.persistence.*;
+import jakarta.persistence.*;
 
-// @Entity
-// @Table(name = "users")
-// public class User {
+import java.time.OffsetDateTime;
 
-//     @Id
-//     private String username;
+@Entity
+@Table(name = "users")
+public class User {
 
-//     @Column(name = "password_hash")
-//     private String passwordHash;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-//     private String role;
+    @Column(nullable = false, unique = true)
+    private String username;
 
-//     // Getter & Setter untuk username
-//     public String getUsername() {
-//         return username;
-//     }
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
 
-//     public void setUsername(String username) {
-//         this.username = username;
-//     }
+    @Column(nullable = false)
+    private String role;
 
-//     // Getter & Setter untuk passwordHash
-//     public String getPasswordHash() {
-//         return passwordHash;
-//     }
+    @Column(name = "created_at", nullable = false)
+    private OffsetDateTime createdAt;
 
-//     public void setPasswordHash(String passwordHash) {
-//         this.passwordHash = passwordHash;
-//     }
+    public void setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
-//     // Getter & Setter untuk role
-//     public String getRole() {
-//         return role;
-//     }
+    public OffsetDateTime getCreatedAt() {
+        return createdAt;
+    }
 
-//     public void setRole(String role) {
-//         this.role = role;
-//     }
-// }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    // Getter & Setter untuk username
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    // Getter & Setter untuk passwordHash
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    // Getter & Setter untuk role
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+}
