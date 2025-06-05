@@ -15,14 +15,47 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false, unique = true, name = "email_address")
+    private String emailAddress;
+
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
+
+    @Column(name="is_active", nullable = false)
+    private boolean isActive;
 
     @Column(nullable = false)
     private String role;
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
+
+    public void setUpdatedAt(OffsetDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public OffsetDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
 
     public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
