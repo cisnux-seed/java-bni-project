@@ -24,9 +24,6 @@ public class User {
     @Column(name="is_active", nullable = false)
     private boolean isActive;
 
-    @Column(nullable = false)
-    private String role;
-
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
@@ -89,14 +86,5 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
-    }
-
-    // Getter & Setter untuk role
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 }

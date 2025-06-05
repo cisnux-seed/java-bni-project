@@ -39,7 +39,6 @@ public class AuthService {
         user.setUsername(username);
         user.setEmailAddress(emailAddress);
         user.setPasswordHash(encoder.encode(password));
-        user.setRole("USER");
         user.setCreatedAt(OffsetDateTime.now());
         user.setUpdatedAt(OffsetDateTime.now());
         user.setActive(true);
@@ -53,7 +52,7 @@ public class AuthService {
         Optional<User> user = repo.findByUsername(username);
         if (user.isPresent() && encoder.matches(password, user.get().getPasswordHash())) {
             logger.warn("PERCOBAAN LOGIN BERHASIL: {}", username);
-            return jwtUtil.generateToken(username, user.get().getRole());
+            return jwtUtil.generateToken(username, user.get().getEmailAddress());
         }
 
         logger.warn("PERCOBAAN LOGIN GAGAL, USERNAME ATAU PASSWORD SALAH: {}", username);
