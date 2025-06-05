@@ -25,13 +25,19 @@ public class AuthService {
     }
 
 
-    public String register(String username, String password) {
+    public String register(String username, String password, String emailAddress) {
         if (repo.existsByUsername(username)) {
             logger.warn("PERCOBAAN REGSTRASI DENGAN MENGGUNAKAN USER TERDAFTAR: {}", username);
             return "User already exists";
         }
+        if (repo.existsByEmailAddress(emailAddress)) {
+            logger.warn("PERCOBAAN REGSTRASI DENGAN MENGGUNAKAN EMAIL TERDAFTAR: {}", emailAddress);
+            return "Email already exists";
+        }
         User user = new User();
+
         user.setUsername(username);
+        user.setEmailAddress(emailAddress);
         user.setPasswordHash(encoder.encode(password));
         user.setRole("USER");
         user.setCreatedAt(OffsetDateTime.now());
