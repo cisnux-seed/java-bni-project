@@ -1,6 +1,10 @@
 pipeline {
 	agent any
 
+	triggers{
+		githubPush()
+	}
+
 	environment {
 		NAMESPACE = "cisnux-skywalker-dev"
 		BUILD_NAME = "devsecops-starter"
