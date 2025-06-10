@@ -50,7 +50,7 @@ public class FileController {
     @GetMapping("/{filename:.+}")
     public ResponseEntity<Map<String, Object>> getFile(@PathVariable String filename) {
         try {
-            final var filePath = Paths.get(uploadDir, filename).resolve(filename).normalize();
+            final var filePath = Paths.get(uploadDir).resolve(filename).normalize();
             final var resource = new UrlResource(filePath.toUri());
 
             if (resource.exists() || resource.isReadable()) {
