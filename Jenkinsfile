@@ -32,4 +32,11 @@ pipeline {
 			echo "Pipeline execution completed."
 		}
 	}
+
+	//properties([pipelineTriggers([githubPush()])])
+	//
+	//node {
+	//	git credentialsId: 'b8d10285-xxxx-xxxx-xxxx-xxxxx',
+    //    url: 'https://github.com/ConsorciAOC-PRJ/qa_payload-jenkins.git', branch: 'master'
+	//}
 }
