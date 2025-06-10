@@ -2,7 +2,7 @@ pipeline {
 	agent any
 
 	environment {
-		PROJECT_NAME = "devops-jenkins-starter"
+		PROJECT_NAME = "cisnux-skywalker-dev"
 		BUILD_NAME = "devsecops-starter"
 	}
 
